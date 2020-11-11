@@ -36,6 +36,15 @@ const followersArray = [
   'luishrd',
   'bigknell'
 ];
+// console.log(followersArray);
+/*
+  List of LS Instructors Github username's:
+    tetondan
+    dustinmyers
+    justsml
+    luishrd
+    bigknell
+*/
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -57,71 +66,58 @@ const followersArray = [
     </div>
 */
 
-function cardCreator (data) {
-// Creating required elements
-  const cardContainer = document.createElement('div');
-  const cardImg = document.createElement('img');
+const userCreator = (object) => {
+ // Creating required elements
+  const userCard = document.createElement('div');
+  const userImg = document.createElement('img');
   const cardInfo = document.createElement('div');
   const cardTitle = document.createElement('h3');
-  const cardUser = document.createElement('p');
-  const useLocation = document.createElement('p');
-  const userPro = document.createElement('p');
+  const userName = document.createElement('p');
+  const userLocation = document.createElement('p');
+  const useProfile = document.createElement('p');
   const ahref = document.createElement('a');
-  const useFollows = document.createElement('p');
+  const userFollows = document.createElement('p');
   const useFollowing = document.createElement('p');
   const useBio = document.createElement('p');
 
-  // Adding text to content
-  cardTitle.textContent = 'data.login'
-  cardImg.src = data.avatar_url
-  cardUser.textContent = 'username';
-  useLocation.textContent = 'location';
-  ahref.textContent = 'address to user page';
-  useFollows.textContent = 'follows count';
-  useFollowing.textContent = 'users following count';
-  useBio.textContent = 'bio;'
-
-  
-// Adding class names to my newly created elements
-  cardContainer.classList.add('card');
+ // Add class names to elements
+  userCard.classList.add('card');
   cardInfo.classList.add('card-info');
   cardTitle.classList.add('name');
+  userName.classList.add('username');
 
+ // Add text content
+  userImg.src = object.avatar_url
+  cardTitle.textContent = object.name
+  userName.textContent = object.login
+  userLocation.textContent = object.location
+  ahref.textContent = object.html_url
+  userFollows.textContent = 'Followers:' + object.followers
+  useFollowing.textContent = 'Following:' + object.following
+  useBio.textContent = 'Bio:' + object.bio
 
-// Appending children elements to parent element(s)
-  cardContainer.appendChild(cardImg);
-  cardContainer.appendChild(cardInfo);
+ // Appending children elements to parent elements
+  document.querySelector('.cards').appendChild(userCard)
+  userCard.appendChild(userImg);
+  userCard.appendChild(cardInfo);
   cardInfo.appendChild(cardTitle);
-  cardInfo.appendChild(cardUser);
-  cardInfo.appendChild(useLocation);
-  cardInfo.appendChild(userPro);
-  userPro.appendChild(ahref);
-  cardInfo.appendChild(useFollows);
+  cardInfo.appendChild(userName);
+  cardInfo.appendChild(userLocation);
+  cardInfo.appendChild(useProfile);
+  useProfile.appendChild(ahref);
+  cardInfo.appendChild(userFollows);
   cardInfo.appendChild(useFollowing);
   cardInfo.appendChild(useBio);
 
-  return cardContainer;
+  return userCard
 }
 
-console.log(cardCreator())
-
-
 followersArray.forEach(username => {
-  // eslint-disable-next-line no-undef
-  axios.get(`https://api.github.com/users/${username}`)
-  .then(response => {
-    console.log(response);
-      const card = cardCreator(response.data)
-      document.querySelector('.cards').appendChild(card);
-      return card
-  })
+axios.get(`https://api.github.com/users/${username}`)
+.then((response) => {
+  console.log(response)
+  const card = userCreator(response.data)
+  document.querySelector('.cards').appendChild(card)
+  return card
 })
-
-/*
-  List of LS Instructors Github username's:
-    tetondan
-    dustinmyers
-    justsml
-    luishrd
-    bigknell
-*/
+})
